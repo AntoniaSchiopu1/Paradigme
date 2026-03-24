@@ -26,6 +26,18 @@ public class Main {
     public static boolean verificaPrezentaHash(HashSet<Integer> setMatricole, int matricolCautat) {
         return setMatricole.contains(matricolCautat);
     }
+    public static void salveazaInFisier(List<Student> lista, String numeFisier) {
+        try {
+            PrintWriter writer = new PrintWriter(numeFisier);
+            for (Student s : lista) {
+                writer.println(s.getNumarMatricol() + ", " + s.getPrenume() + ", " +
+                        s.getNume() + ", " + s.getFormatieDeStudiu());
+            }
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Eroare la scriere.");
+        }
+    }
     public  static void main() {
 
 /*
@@ -108,21 +120,24 @@ public class Main {
                         .thenComparing(Student::getNume)
         );
         salveazaInFisier(listaDinFisier, "Studiu+Nume.csv");
-
-
-
-
-    }
-    public static void salveazaInFisier(List<Student> lista, String numeFisier) {
+//Laborator4
+        Map<Integer, Integer> note = new HashMap<>();
+        List<Integer> listanote = new ArrayList<>();
         try {
-            PrintWriter writer = new PrintWriter(numeFisier);
-            for (Student s : lista) {
-                writer.println(s.getNumarMatricol() + ", " + s.getPrenume() + ", " +
-                        s.getNume() + ", " + s.getFormatieDeStudiu());
+            File fisier = new File("NrmNote.csv");
+            Scanner cititor = new Scanner(fisier);
+
+            while (cititor.hasNextInt()) {
+                listanote.add(cititor.nextInt());
             }
-            writer.close();
-        } catch (IOException e) {
-            System.out.println("Eroare la scriere.");
+            cititor.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Eroare: Fisierul nu exista.");
+            return;
         }
+
+
+
     }
+
 }

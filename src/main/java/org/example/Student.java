@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.Objects;
+
 public class Student {
     private int numarMatricol;
     private String prenume;
@@ -27,4 +29,21 @@ public class Student {
     @Override
     public String toString() {
         return "Student{" + "numarMatrical=" + numarMatricol + ", prenume='" + prenume  + ", nume='" + nume + '\'' + ", formatieDeStudiu=" + formatieDeStudiu + '}';}
+
+    @Override
+    public boolean equals(Object obiectPrimit) {
+        if (this == obiectPrimit)
+            return true;
+        if (!(obiectPrimit instanceof Student))
+            return false;
+
+        Student celalalt = (Student) obiectPrimit;
+
+        return this.numarMatricol == celalalt.numarMatricol;
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(numarMatricol);
+    }
 }

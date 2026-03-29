@@ -26,6 +26,7 @@ public class Main {
     public static boolean verificaPrezentaHash(HashSet<Integer> setMatricole, int matricolCautat) {
         return setMatricole.contains(matricolCautat);
     }
+
     public static void salveazaInFisier(List<Student> lista, String numeFisier) {
         try {
             PrintWriter writer = new PrintWriter(numeFisier);
@@ -38,7 +39,17 @@ public class Main {
             System.out.println("Eroare la scriere.");
         }
     }
-    public  static void main() {
+
+    public static Double returnarenota(Map<Integer, Double> note, int matricolCautat) {
+
+        return note.get(matricolCautat);
+    }
+    public static Double gasesteNota(Map<Integer, Double> note, int matricol) {
+
+        return note.get(matricol);
+    }
+
+    public static void main() {
 
 /*
         Student student1 = new Student(10234, "Antonia", "Schiopu", 312);
@@ -121,23 +132,47 @@ public class Main {
         );
         salveazaInFisier(listaDinFisier, "Studiu+Nume.csv");
 //Laborator4
-        Map<Integer, Integer> note = new HashMap<>();
-        List<Integer> listanote = new ArrayList<>();
-        try {
-            File fisier = new File("NrmNote.csv");
-            Scanner cititor = new Scanner(fisier);
+//ex1
+        Map<Integer, Double> note = new HashMap<>();
 
-            while (cititor.hasNextInt()) {
-                listanote.add(cititor.nextInt());
+        try {
+            File fisierNote = new File("NrmNote.csv");
+            Scanner cititorNote = new Scanner(fisierNote);
+
+            while (cititorNote.hasNextInt()) {
+                int matricol = cititorNote.nextInt();
+                if (cititorNote.hasNextDouble()) {
+                    double valoareNota = cititorNote.nextDouble();
+                    note.put(matricol, valoareNota);
+                }
             }
-            cititor.close();
+            cititorNote.close();
         } catch (FileNotFoundException e) {
-            System.out.println("Eroare: Fisierul nu exista.");
-            return;
+            System.out.println("An error occurred.");
         }
 
 
+        for (Student s : listaDinFisier) {
+
+            Double notaStudent = note.get(s.getNumarMatricol());
+
+            System.out.println(s.getNumarMatricol() + ", " + s.getPrenume() + ", " + s.getNume() + ", " + s.getFormatieDeStudiu() + ", Nota: " + (notaStudent != null ? notaStudent : "Fără notă"));
+        }
+//ex2
+        System.out.println();
+        int idCautat = 10234;
+        Double notaGasita = returnarenota(note, idCautat);
+
+        if (notaGasita != null) {
+            System.out.println("Studentul " + idCautat + " are nota: " + notaGasita);
+        } else {
+            System.out.println("Studentul nu a fost găsit în baza de date cu note.");
+        }
+//ex3
+        for (Student s : listaDinFisier) {
+            Double notaStudent = gasesteNota(note, s.getNumarMatricol());
+            System.out.println(s.getNumarMatricol() + ", " + s.getNume() + ", " + s.getPrenume() + ", " + + s.getFormatieDeStudiu() +  ", Nota: " + (notaStudent != null ? notaStudent : "Lipsă"));
+        }
 
     }
-
 }

@@ -48,6 +48,22 @@ public class Main {
 
         return note.get(matricol);
     }
+    public static float GasesteNota(String prenume, String nume, Map<Integer, Student> studenti) {
+
+        Map<String, Student> hartaDupaNume = new HashMap<>();
+        for (Student s : studenti.values()) {
+            String cheieNume = s.getPrenume() + "-" + s.getNume();
+            hartaDupaNume.put(cheieNume, s);
+        }
+        String deCautat = prenume + "-" + nume;
+        Student gasit = hartaDupaNume.get(deCautat);
+
+        if (gasit != null) {
+            return (float) gasit.getNota();
+        }
+
+        return 0.0f;
+    }
 
     public static void main() {
 
@@ -173,6 +189,43 @@ public class Main {
             Double notaStudent = gasesteNota(note, s.getNumarMatricol());
             System.out.println(s.getNumarMatricol() + ", " + s.getNume() + ", " + s.getPrenume() + ", " + + s.getFormatieDeStudiu() +  ", Nota: " + (notaStudent != null ? notaStudent : "Lipsă"));
         }
+//l4
+        System.out.println();
+        Map<Integer, Student> studenti = new HashMap<>();
+        for (Student s : listaDinFisier) {
+            studenti.put(s.getNumarMatricol(), s);
+        }
 
+        try (Scanner cititorNote = new Scanner(new File("NrmNote.csv"))) {
+            while (cititorNote.hasNextInt()) {
+                int idDinFisier = cititorNote.nextInt();
+                if (cititorNote.hasNextDouble()) {
+                    double valoareNota = cititorNote.nextDouble();
+
+                    // CĂUTARE O(1): Mergem direct la studentul cu acest ID
+                    Student s = studenti.get(idDinFisier);
+
+                    if (s != null) {
+                        s.setNota(valoareNota); // Îi punem nota folosind setter-ul
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+        }
+        for (Student s : studenti.values()) {
+            System.out.println(s);
+        }
+        float notaM = GasesteNota("Antonia", "Schiopu", studenti);
+        float notaN = GasesteNota("Alexandru", "Salaghe", studenti);
+
+        System.out.println("Nota pentru Antonia este: " + notaM);
+        System.out.println("Nota pentru Alexandru este: " + notaN);
+
+
+        System.out.println();
+        for (Student s : studenti.values()) {
+            System.out.println(s);
+        }
     }
 }

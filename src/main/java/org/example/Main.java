@@ -62,7 +62,7 @@ public class Main {
             return (float) gasit.getNota();
         }
 
-        return 0.0f;
+        return 0;
     }
 
     public static void main() {
@@ -202,11 +202,11 @@ public class Main {
                 if (cititorNote.hasNextDouble()) {
                     double valoareNota = cititorNote.nextDouble();
 
-                    // CĂUTARE O(1): Mergem direct la studentul cu acest ID
+                    //  Mergem direct la studentul cu acest ID
                     Student s = studenti.get(idDinFisier);
 
                     if (s != null) {
-                        s.setNota(valoareNota); // Îi punem nota folosind setter-ul
+                        s.setNota(valoareNota);
                     }
                 }
             }

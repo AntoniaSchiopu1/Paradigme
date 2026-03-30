@@ -18,9 +18,7 @@ public class Student {
     }
     public void setNota(double nota) {this.nota = nota;}
 
-    public int getNumarMatricol() {
-        return numarMatricol;
-    }
+    public int getNumarMatricol() {return numarMatricol;}
     public String getPrenume() {
         return prenume;
     }
@@ -39,9 +37,8 @@ public class Student {
     public boolean equals(Object obiectPrimit) {
         if (this == obiectPrimit)
             return true;
-        if (!(obiectPrimit instanceof Student))
+        if (obiectPrimit == null || this.getClass() != obiectPrimit.getClass())
             return false;
-
         Student celalalt = (Student) obiectPrimit;
 
         return this.numarMatricol == celalalt.numarMatricol;

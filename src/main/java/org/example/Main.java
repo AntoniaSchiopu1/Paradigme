@@ -48,7 +48,7 @@ public class Main {
 
         return note.get(matricol);
     }
-    public static float GasesteNota(String prenume, String nume, Map<Integer, Student> studenti) {
+   /* public static float GasesteNota(String prenume, String nume, Map<Integer, Student> studenti) {
 
         Map<String, Student> hartaDupaNume = new HashMap<>();
         for (Student s : studenti.values()) {
@@ -64,7 +64,7 @@ public class Main {
 
         return 0;
     }
-
+*/
     public static void main() {
 
 /*
@@ -139,8 +139,12 @@ public class Main {
         }
 
         //sortare
-        listaDinFisier.sort(Comparator.comparingInt(Student::getNumarMatricol));
+        listaDinFisier.sort(Comparator.comparing(Student::getNume));
         salveazaInFisier(listaDinFisier, "StudentiSortati.csv");
+
+
+
+
         //sortare format de studiu+nume
         listaDinFisier.sort(
                 Comparator.comparingInt(Student::getFormatieDeStudiu)
@@ -190,6 +194,7 @@ public class Main {
             System.out.println(s.getNumarMatricol() + ", " + s.getNume() + ", " + s.getPrenume() + ", " + + s.getFormatieDeStudiu() +  ", Nota: " + (notaStudent != null ? notaStudent : "Lipsă"));
         }
 //l4
+        /*
         System.out.println();
         Map<Integer, Student> studenti = new HashMap<>();
         for (Student s : listaDinFisier) {
@@ -226,6 +231,52 @@ public class Main {
         System.out.println();
         for (Student s : studenti.values()) {
             System.out.println(s);
+        }
+        */
+
+
+        //laborator5
+        List<StudentCuNota> listaNouaL5 = new ArrayList<>();
+
+        for (Student s : listaDinFisier) {
+            Double n = note.get(s.getNumarMatricol());
+            double nota;
+
+            if (n != null) {
+                nota = n;
+            } else {
+                nota = 0.0;
+            }
+
+            StudentCuNota studentNou = new StudentCuNota(
+                    s.getNumarMatricol(),
+                    s.getPrenume(),
+                    s.getNume(),
+                    s.getFormatieDeStudiu(),
+                    nota
+            );
+
+            listaNouaL5.add(studentNou);
+        }
+
+        salvareListaStudentiCuNota(listaNouaL5, "AfisStudentiL5.csv");
+
+
+
+
+
+
+    }
+    public static void salvareListaStudentiCuNota(List<StudentCuNota> lista, String numeFisier) {
+        try {
+            PrintWriter writer = new PrintWriter(new File(numeFisier));
+            for (StudentCuNota s : lista) {
+                writer.println(s.getNumarMatricol() + ", " + s.getPrenume() + ", " +
+                        s.getNume() + ", " + s.getFormatieDeStudiu() + ", " + s.getNota());
+            }
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
         }
     }
 }

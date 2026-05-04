@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 public final class StudentCuNota extends Student {
     private double nota;
+    private final List<StudentObserver> observatori = new ArrayList<>();
 
     public StudentCuNota(int numarMatricol, String prenume, String nume, int formatieDeStudiu, double nota) {
 
@@ -14,11 +16,25 @@ public final class StudentCuNota extends Student {
         this.nota = nota;
     }
 
+    public void adaugaObservator(StudentObserver obs) {
+        this.observatori.add(obs);
+    }
+    private void notifica() {
+        for (StudentObserver obs : observatori) {
+            obs.actualizeaza(this.prenume + " " + this.nume, this.nota);
+        }
+    }
 
     public double getNota() { return nota; }
 
-    public void setNota(double nota) { this.nota = nota; }
-    public void setId(double nota) { this.nota = nota; }
+    public void setNota(double nota)
+    { this.nota = nota;
+    notifica();
+    }
+    public void setId(double nota)
+    { this.nota = nota;
+        notifica();
+    }
 
     @Override
     public String toString() {

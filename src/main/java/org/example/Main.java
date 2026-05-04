@@ -380,6 +380,15 @@ studenti.values()) {
         System.out.println("Media notelor este : ");
         double media = sumaNote / studentiModificati.size();
         System.out.println( media);
+
+        //Ex9
+        //Un design patter in proiectul cu studenti , la alegere
+        System.out.println("Notificare schimbare nota : ");
+        StudentCuNota s = new StudentCuNota(1, "Ion", "Popescu", 101, 7.0);
+        s.adaugaObservator((nume, nota) -> System.out.println("Update: " + nume + " are nota " + nota));
+        s.setNota(9.5);
+        s.setNota(10.0);
+
     }
 
 

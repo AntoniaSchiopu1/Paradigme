@@ -388,6 +388,7 @@ studenti.values()) {
         s.adaugaObservator((nume, nota) -> System.out.println("Update: " + nume + " are nota " + nota));
         s.setNota(9.5);
         s.setNota(10.0);
+        s.setNota(5.56);
 
     }
 

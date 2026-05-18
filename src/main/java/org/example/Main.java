@@ -390,11 +390,60 @@ studenti.values()) {
         s.setNota(10.0);
         s.setNota(5.56);
 
+
+        //saptamana 11
+        //copie a fisierului cu studenti si sa le citim si sa le sortam in acelasi timp
+
+        List<Student> fStudent = new ArrayList<>();
+
+        Thread tCitire = new Thread(() -> {
+            fStudent.addAll(citesteDinFisier("FStudent.csv"));
+        });
+
+        Thread tSortare = new Thread(() -> {
+            try {
+                tCitire.join();
+            } catch (InterruptedException ignored) {}
+
+            fStudent.sort(Comparator.comparing(Student::getNume));
+
+            System.out.println(" Rezultatul sortarii:");
+            fStudent.forEach(stud -> System.out.println("  -> " + stud.getNume() + " " + stud.getPrenume()));
+        });
+
+        tCitire.start();
+        tSortare.start();
+
+        try {
+            tSortare.join();
+        } catch (InterruptedException ignored) {}
+
     }
 
+    public static List<Student> citesteDinFisier(String numeFisier) {
+        List<Student> lista = new ArrayList<>();
+        try {
+            File myObj = new File(numeFisier);
+            Scanner myReader = new Scanner(myObj);
 
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                if (data.trim().isEmpty()) continue;
 
+                String[] parti = data.split(",");
+                int matricol = Integer.parseInt(parti[0].trim());
+                String prenume = parti[1].trim();
+                String nume = parti[2].trim();
+                int grupa = Integer.parseInt(parti[3].trim());
 
+                lista.add(new Student(matricol, prenume, nume, grupa));
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Fișierul nu a fost găsit.");
+        }
+        return lista;
+    }
 
 
 

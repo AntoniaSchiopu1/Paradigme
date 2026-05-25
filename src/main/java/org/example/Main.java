@@ -14,7 +14,8 @@ public class Main {
     public Main() throws FileNotFoundException {
     }
 
-    public static boolean verificaPrezenta(List<Student> lista, int matricolCautat) {
+    public static boolean verificaPrezenta(List<Student> lista, int matricolCautat)
+    {
 
         for (Student s : lista) {
 
@@ -26,11 +27,13 @@ public class Main {
         return false;
     }
 
-    public static boolean verificaPrezentaHash(HashSet<Integer> setMatricole, int matricolCautat) {
+    public static boolean verificaPrezentaHash(HashSet<Integer> setMatricole, int matricolCautat)
+    {
         return setMatricole.contains(matricolCautat);
     }
 
-    public static void salveazaInFisier(List<Student> lista, String numeFisier) {
+    public static void salveazaInFisier(List<Student> lista, String numeFisier)
+    {
         try {
             PrintWriter writer = new PrintWriter(numeFisier);
             for (Student s : lista) {
@@ -43,17 +46,20 @@ public class Main {
         }
     }
 
-    public static Double returnarenota(Map<Integer, Double> note, int matricolCautat) {
+    public static Double returnarenota(Map<Integer, Double> note, int matricolCautat)
+    {
 
         return note.get(matricolCautat);
     }
 
-    public static Double gasesteNota(Map<Integer, Double> note, int matricol) {
+    public static Double gasesteNota(Map<Integer, Double> note, int matricol)
+    {
 
         return note.get(matricol);
     }
 
-    public static float gasesteNotaDupaNumeComplet(String prenume, String nume, Map<String, Double> hartaNote) {
+    public static float gasesteNotaDupaNumeComplet(String prenume, String nume, Map<String, Double> hartaNote)
+    {
         String cheie = prenume + "-" + nume;
         Double gasit = hartaNote.get(cheie);
         if (gasit != null) {
@@ -62,7 +68,8 @@ public class Main {
         return 0.0f;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         laborator1();
         laborator2();
         laborator3();
@@ -73,10 +80,12 @@ public class Main {
         laborator9();
         laborator10();
         laborator11();
+        colocviu();
     }
 
 
-    public static void laborator1() {
+    public static void laborator1()
+    {
         System.out.println("Laborator 1");
         Student student1 = new Student(10234, "Antonia", "Schiopu", 312);
         System.out.println(student1);
@@ -89,7 +98,8 @@ public class Main {
     }
 
 
-    public static void laborator2() {
+    public static void laborator2()
+    {
         System.out.println("Laborator 2");
         List<Student> listaStudenti = new ArrayList<>();
         listaStudenti.add(new Student(10000, "Ana", "Bacila", 317));
@@ -98,13 +108,16 @@ public class Main {
         listaStudenti.add(new Student(30455, "Gabriel", "Halmaghe", 320));
 
         System.out.println("Lista de studenti:");
-        for (Student s : listaStudenti) {
+        for (Student s : listaStudenti)
+        {
             System.out.println(s);
         }
 
-        if (verificaPrezenta(listaStudenti, 22222)) {
+        if (verificaPrezenta(listaStudenti, 22222))
+        {
             System.out.println("Studentul este prezent!");
-        } else {
+        } else
+        {
             System.out.println("Studentul nu este prezent!");
         }
 
@@ -113,19 +126,23 @@ public class Main {
             setMatricole.add(s.getNumarMatricol());
         }
         int deCautat = 80911;
-        if (verificaPrezentaHash(setMatricole, deCautat)) {
+        if (verificaPrezentaHash(setMatricole, deCautat))
+        {
             System.out.println("Studentul este prezent ");
-        } else {
+        } else
+        {
             System.out.println("Studentul nu este prezent.");
         }
         System.out.println("Lista completa:");
-        for (Student s : listaStudenti) {
+        for (Student s : listaStudenti)
+        {
             System.out.println(s);
         }
     }
 
 
-    public static void laborator3() {
+    public static void laborator3()
+    {
         System.out.println("Laborator 3");
         List<Student> listaDinFisier = new ArrayList<>();
         try {
@@ -228,13 +245,15 @@ public class Main {
     }
 
 
-    public static void laborator5() {
+    public static void laborator5()
+    {
         System.out.println("Laborator 5");
         List<Student> listaDinFisier = citesteDinFisier("FStudent.csv");
         Map<Integer, Double> note = incarcaNoteDinFisier("NrmNote.csv");
         ArrayList<StudentCuNota> listaNouaL5 = new ArrayList<>();
 
-        for (Student s : listaDinFisier) {
+        for (Student s : listaDinFisier)
+        {
             Double n = note.get(s.getNumarMatricol());
             double nota;
 
@@ -358,7 +377,7 @@ public class Main {
                 tCitire.join();
             } catch (InterruptedException ignored) {}
 
-            // S-a inlocuit doar cuvântul greșit 'Compassion' cu clasa reală 'Comparator'
+
             fStudent.sort(new Comparator<Student>() {
                 @Override
                 public int compare(Student stud1, Student stud2) {
@@ -378,6 +397,70 @@ public class Main {
         } catch (InterruptedException ignored) {}
     }
 
+    public static void colocviu()
+    {   System.out.println("Ex1");
+        System.out.println("Ex4");
+        List<StudentCuNota> listaColocviu = new ArrayList<>();
+        List<StudentCuNota>Listnoua = new ArrayList<>(); List<StudentCuNota>Listnou2 = new ArrayList<>();
+        Thread tCitire = new Thread(() -> {
+            listaColocviu.addAll(citesteDinFisiercuNota("AfisStudentiL5.csv"));
+        });
+        Thread tfiltrsub = new Thread(() -> {
+            try {
+                tCitire.join();
+            } catch (InterruptedException ignored) {}
+            listaColocviu.stream().filter(s -> s.getNota() < 5).forEach(s ->Listnoua.add(s));
+            salveazaInFisiercuNota(Listnoua, "NotaSub5.csv");
+        });
+
+        Thread tfiltrpeste = new Thread(() -> {
+            try {
+                tCitire.join();
+            } catch (InterruptedException ignored) {}
+            listaColocviu.stream().filter(s -> s.getNota() >= 5).forEach(s ->Listnou2.add(s));
+            salveazaInFisiercuNota(Listnou2, "NotaPeste5.csv");
+        });
+
+
+    }
+    public static List<StudentCuNota> citesteDinFisiercuNota(String numeFisier) {
+        List<StudentCuNota> lista = new ArrayList<>();
+        try {
+            File myObj = new File(numeFisier);
+            Scanner myReader = new Scanner(myObj);
+
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                if (data.trim().isEmpty()) continue;
+
+                String[] parti = data.split(",");
+                int numarMatricoll = Integer.parseInt(parti[0].trim());
+                String prenume = parti[1].trim();
+                String nume = parti[2].trim();
+                int formatieDeStudiu  = Integer.parseInt(parti[3].trim());
+                double nota= Integer.parseInt(parti[4].trim());
+
+                lista.add(new StudentCuNota(numarMatricoll, prenume, nume, formatieDeStudiu,nota));
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Fișierul nu a fost găsit.");
+        }
+        return lista;
+    }
+    public static void salveazaInFisiercuNota(List<StudentCuNota> lista, String numeFisier)
+    {
+        try {
+            PrintWriter writer = new PrintWriter(numeFisier);
+            for (StudentCuNota s : lista) {
+                writer.println(s.getNumarMatricol() + ", " + s.getPrenume() + ", " +
+                        s.getNume() + ", " + s.getFormatieDeStudiu()+","+s.getNota());
+            }
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Eroare la scriere.");
+        }
+    }
 
     public static List<Student> citesteDinFisier(String numeFisier) {
         List<Student> lista = new ArrayList<>();
